@@ -18,7 +18,6 @@ export type CatalogItem = {
 export type BeadItem = CatalogItem & { id: string };
 
 const CATALOG: CatalogItem[] = [
-  // 1. Pearls (6mm & 4mm)
   { label: "Silver Pearl (6mm)", color: "#D4D4D8", category: "pearls", mm: 6, shape: "round" },
   { label: "White Pearl (6mm)", color: "#FFFDF9", category: "pearls", mm: 6, shape: "round" },
   { label: "White Pearl (4mm)", color: "#FFFDF9", category: "pearls", mm: 4, shape: "round" },
@@ -30,33 +29,25 @@ const CATALOG: CatalogItem[] = [
   { label: "Light Pink Pearl (6mm)", color: "#FBCFE8", category: "pearls", mm: 6, shape: "round" },
   { label: "Pink Jambu Pearl (6mm)", color: "#FB7185", category: "pearls", mm: 6, shape: "round" },
   { label: "Dark Red Pearl (6mm)", color: "#881337", category: "pearls", mm: 6, shape: "round" },
-
-  // 2. Black Beads (6mm & 4mm)
   { label: "Black Bead (6mm)", color: "#18181B", category: "black", mm: 6, shape: "round" },
   { label: "Black Bead (4mm)", color: "#18181B", category: "black", mm: 4, shape: "round" },
-
-  // 3. Pastel Ombré (6mm)
   { label: "Purple-Blue Ombré", color: "#C4B5FD", color2: "#7DD3FC", category: "ombre", mm: 6, shape: "round" },
   { label: "Mint Green Ombré", color: "#6EE7B7", color2: "#ECFDF5", category: "ombre", mm: 6, shape: "round" },
   { label: "Baby Blue & White Ombré", color: "#7DD3FC", color2: "#FFFFFF", category: "ombre", mm: 6, shape: "round" },
   { label: "Baby Pink & White Ombré", color: "#F9A8D4", color2: "#FFFFFF", category: "ombre", mm: 6, shape: "round" },
-
-  // 4. Clear Rainbow Acrylic (6mm & 8mm)
   { label: "Clear Rainbow (8mm)", color: "#E0F2FE", color2: "#FCE7F3", category: "rainbow", mm: 8, shape: "round" },
   { label: "Rainbow Pink (6mm)", color: "#F9A8D4", color2: "#FEF08A", category: "rainbow", mm: 6, shape: "round" },
   { label: "Rainbow Pink (8mm)", color: "#F9A8D4", color2: "#FEF08A", category: "rainbow", mm: 8, shape: "round" },
   { label: "Rainbow Blue (6mm)", color: "#7DD3FC", color2: "#E9D5FF", category: "rainbow", mm: 6, shape: "round" },
   { label: "Rainbow Blue (8mm)", color: "#7DD3FC", color2: "#E9D5FF", category: "rainbow", mm: 8, shape: "round" },
   { label: "Rainbow Purple (6mm)", color: "#C084FC", color2: "#BAE6FD", category: "rainbow", mm: 6, shape: "round" },
-
-  // 5. Cat's Eye (10mm)
+];
+const MORE_CATALOG: CatalogItem[] = [
   { label: "Cat's Eye Lilac (10mm)", color: "#C4B5FD", category: "cateye", mm: 10, shape: "round" },
   { label: "Cat's Eye Dusty Rose (10mm)", color: "#F472B6", category: "cateye", mm: 10, shape: "round" },
   { label: "Cat's Eye Baby Blue (10mm)", color: "#7DD3FC", category: "cateye", mm: 10, shape: "round" },
   { label: "Cat's Eye Milky White (10mm)", color: "#E2E8F0", category: "cateye", mm: 10, shape: "round" },
   { label: "Cat's Eye Dark Red (10mm)", color: "#881337", category: "cateye", mm: 10, shape: "round" },
-
-  // 6. Shaped Beads & Charms
   { label: "Cream Pearl Heart", color: "#FEF9EE", category: "shapes", mm: 8, shape: "heart" },
   { label: "Cream Pearl Flower", color: "#FEF9EE", category: "shapes", mm: 8, shape: "flower" },
   { label: "White Daisy Flower", color: "#FFFFFF", category: "shapes", mm: 8, shape: "daisy" },
@@ -67,6 +58,8 @@ const CATALOG: CatalogItem[] = [
   { label: "Blue Iridescent Star", color: "#7DD3FC", category: "shapes", mm: 8, shape: "star" },
   { label: "Clear Iridescent Star", color: "#E2E8F0", category: "shapes", mm: 8, shape: "star" },
 ];
+
+const ALL_CATALOG = [...CATALOG, ...MORE_CATALOG];
 
 const LETTER_STYLES = [
   { id: "white-black", en: "White (Black Letter)", idLabel: "Putih (Huruf Hitam)", bg: "#FFFFFF", fg: "#18181B" },
@@ -86,6 +79,40 @@ const JELLY_TINTS = [
 
 const COLORFUL_INKS = ["#EC4899", "#8B5CF6", "#0EA5E9", "#10B981", "#F59E0B"];
 
+const WRIST_SIZES = [
+  { id: "14cm", label: "14 cm", max: 24 },
+  { id: "16cm", label: "16 cm", max: 28 },
+  { id: "18cm", label: "18 cm", max: 32 },
+];
+const PRESETS: { nameEn: string; nameId: string; items: CatalogItem[] }[] = [
+  {
+    nameEn: "Coquette Pink",
+    nameId: "Coquette Pink",
+    items: [
+      { label: "Light Pink Pearl (6mm)", color: "#FBCFE8", category: "pearls", mm: 6, shape: "round" },
+      { label: "White Pearl (6mm)", color: "#FFFDF9", category: "pearls", mm: 6, shape: "round" },
+      { label: "Cream Pearl Heart", color: "#FEF9EE", category: "shapes", mm: 8, shape: "heart" },
+      { label: "Pink Iridescent Butterfly", color: "#F9A8D4", category: "shapes", mm: 10, shape: "butterfly" },
+      { label: "Cream Pearl Heart", color: "#FEF9EE", category: "shapes", mm: 8, shape: "heart" },
+      { label: "White Pearl (6mm)", color: "#FFFDF9", category: "pearls", mm: 6, shape: "round" },
+      { label: "Light Pink Pearl (6mm)", color: "#FBCFE8", category: "pearls", mm: 6, shape: "round" },
+    ],
+  },
+  {
+    nameEn: "Ocean Dream",
+    nameId: "Mimpi Laut",
+    items: [
+      { label: "Light Blue Pearl (6mm)", color: "#7DD3FC", category: "pearls", mm: 6, shape: "round" },
+      { label: "Baby Blue & White Ombré", color: "#7DD3FC", color2: "#FFFFFF", category: "ombre", mm: 6, shape: "round" },
+      { label: "Blue Iridescent Star", color: "#7DD3FC", category: "shapes", mm: 8, shape: "star" },
+      { label: "Blue Iridescent Butterfly", color: "#93C5FD", category: "shapes", mm: 10, shape: "butterfly" },
+      { label: "Blue Iridescent Star", color: "#7DD3FC", category: "shapes", mm: 8, shape: "star" },
+      { label: "Baby Blue & White Ombré", color: "#7DD3FC", color2: "#FFFFFF", category: "ombre", mm: 6, shape: "round" },
+      { label: "Light Blue Pearl (6mm)", color: "#7DD3FC", category: "pearls", mm: 6, shape: "round" },
+    ],
+  },
+];
+
 const INITIAL_BEADS: BeadItem[] = [
   { id: "1", label: "Light Pink Pearl (6mm)", color: "#FBCFE8", category: "pearls", mm: 6, shape: "round" },
   { id: "2", label: "White Pearl (6mm)", color: "#FFFDF9", category: "pearls", mm: 6, shape: "round" },
@@ -95,13 +122,15 @@ const INITIAL_BEADS: BeadItem[] = [
   { id: "6", label: "Lilac Pearl (6mm)", color: "#D8B4FE", category: "pearls", mm: 6, shape: "round" },
   { id: "7", label: "Pink Jambu Pearl (6mm)", color: "#FB7185", category: "pearls", mm: 6, shape: "round" },
 ];
+
 function getBeadWidth(b: BeadItem): number {
   if (b.category === "letter") return 0.3;
-  if (b.shape === "butterfly") return 0.34;
-  if (b.shape === "heart" || b.shape === "star" || b.shape === "flower" || b.shape === "daisy") return 0.3;
+  if (b.shape === "butterfly") return 0.32;
+  if (b.shape === "heart") return 0.36;
+  if (b.shape === "star") return 0.38;
+  if (b.shape === "flower" || b.shape === "daisy") return 0.34;
   return b.mm === 4 ? 0.22 : b.mm === 6 ? 0.31 : b.mm === 8 ? 0.39 : 0.47;
 }
-
 function makeLetterTexture(letter: string, bgColor: string, fgColor: string) {
   const canvas = document.createElement("canvas");
   canvas.width = 128;
@@ -156,31 +185,15 @@ function makeSpecialTexture(b: BeadItem): THREE.CanvasTexture | null {
   }
   return new THREE.CanvasTexture(canvas);
 }
-
 function buildBeadMesh(b: BeadItem): THREE.Object3D {
   const scale = b.mm === 4 ? 0.11 : b.mm === 6 ? 0.155 : b.mm === 8 ? 0.195 : 0.235;
 
   if (b.category === "letter") {
     const tex = makeLetterTexture(b.label, b.color, b.color2 || "#18181B");
     const isJelly = b.letterStyle === "jelly";
-    const sideMat = new THREE.MeshPhysicalMaterial({
-      color: b.color,
-      roughness: 0.15,
-      clearcoat: 1,
-      transparent: isJelly,
-      opacity: isJelly ? 0.72 : 1,
-    });
-    const faceMat = new THREE.MeshPhysicalMaterial({
-      map: tex,
-      roughness: 0.15,
-      clearcoat: 1,
-      transparent: isJelly,
-      opacity: isJelly ? 0.85 : 1,
-    });
-    const coin = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.165, 0.165, 0.1, 28),
-      [sideMat, faceMat, faceMat]
-    );
+    const sideMat = new THREE.MeshPhysicalMaterial({ color: b.color, roughness: 0.15, clearcoat: 1, transparent: isJelly, opacity: isJelly ? 0.72 : 1 });
+    const faceMat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.15, clearcoat: 1, transparent: isJelly, opacity: isJelly ? 0.85 : 1 });
+    const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.165, 0.165, 0.1, 28), [sideMat, faceMat, faceMat]);
     coin.rotation.x = Math.PI / 2;
     return coin;
   }
@@ -209,7 +222,9 @@ function buildBeadMesh(b: BeadItem): THREE.Object3D {
     s.bezierCurveTo(0.19, 0.19, 0, 0.19, 0, 0.1);
     const geo = new THREE.ExtrudeGeometry(s, { depth: 0.12, bevelEnabled: true, bevelThickness: 0.035, bevelSize: 0.025 });
     geo.center();
-    return new THREE.Mesh(geo, mat);
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.z = Math.PI / 2;
+    return mesh;
   }
 
   if (b.shape === "star") {
@@ -223,7 +238,9 @@ function buildBeadMesh(b: BeadItem): THREE.Object3D {
     s.closePath();
     const geo = new THREE.ExtrudeGeometry(s, { depth: 0.1, bevelEnabled: true, bevelThickness: 0.025, bevelSize: 0.02 });
     geo.center();
-    return new THREE.Mesh(geo, mat);
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.z = Math.PI / 2;
+    return mesh;
   }
 
   if (b.shape === "butterfly") {
@@ -235,8 +252,8 @@ function buildBeadMesh(b: BeadItem): THREE.Object3D {
       w.scale.set(idx < 2 ? 1.15 : 0.85, idx < 2 ? 1.05 : 0.8, 0.45);
       g.add(w);
     });
-    const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.025, 0.15, 6, 10), new THREE.MeshStandardMaterial({ color: "#FEF3C7", metalness: 0.3 }));
-    g.add(body);
+    g.add(new THREE.Mesh(new THREE.CapsuleGeometry(0.025, 0.15, 6, 10), new THREE.MeshStandardMaterial({ color: "#FEF3C7", metalness: 0.3 })));
+    g.rotation.z = Math.PI / 2;
     return g;
   }
 
@@ -251,9 +268,8 @@ function buildBeadMesh(b: BeadItem): THREE.Object3D {
       petal.scale.z = 0.55;
       g.add(petal);
     }
-    const centerMat = new THREE.MeshStandardMaterial({ color: b.shape === "daisy" ? "#FACC15" : "#FDE68A", roughness: 0.25 });
-    const center = new THREE.Mesh(new THREE.SphereGeometry(0.07, 14, 14), centerMat);
-    g.add(center);
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(0.07, 14, 14), new THREE.MeshStandardMaterial({ color: b.shape === "daisy" ? "#FACC15" : "#FDE68A", roughness: 0.25 })));
+    g.rotation.z = Math.PI / 2;
     return g;
   }
 
@@ -261,12 +277,23 @@ function buildBeadMesh(b: BeadItem): THREE.Object3D {
 }
 export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [beads, setBeads] = useState<BeadItem[]>(INITIAL_BEADS);
+  const [history, setHistory] = useState<BeadItem[][]>([]);
+  const [wristSize, setWristSize] = useState<string>("16cm");
   const [tab, setTab] = useState<BeadCategory>("pearls");
   const [letterStyle, setLetterStyle] = useState("white-black");
   const [jellyTint, setJellyTint] = useState("#F472B6");
   const [word, setWord] = useState("");
   const [copied, setCopied] = useState(false);
+
+  const currentWrist = WRIST_SIZES.find((w) => w.id === wristSize) || WRIST_SIZES[1];
+  const maxBeads = currentWrist.max;
+
+  const updateBeads = (next: BeadItem[]) => {
+    setHistory((prev) => [...prev.slice(-15), beads]);
+    setBeads(next);
+  };
 
   useEffect(() => {
     const el = mountRef.current;
@@ -277,11 +304,12 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     camera.position.set(0, 2.2, 5.2);
     camera.lookAt(0, 0, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
     renderer.setSize(el.clientWidth, el.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     el.innerHTML = "";
     el.appendChild(renderer.domElement);
+    canvasRef.current = renderer.domElement;
 
     scene.add(new THREE.AmbientLight(0xffffff, 1.4));
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
@@ -301,7 +329,6 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     const radius = circumference / (Math.PI * 2);
 
     const silverMat = new THREE.MeshStandardMaterial({ color: "#e4e4e7", metalness: 0.9, roughness: 0.15 });
-
     const wire = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.015, 10, 80), silverMat);
     wire.rotation.x = Math.PI / 2;
     group.add(wire);
@@ -320,7 +347,6 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
       obj.lookAt(0, 0, 0);
       group.add(obj);
     });
-
     [startAngle - 0.05 / radius, endAngle + 0.05 / radius].forEach((a) => {
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.085, 16, 16), silverMat);
       cap.position.set(Math.sin(a) * radius, 0, Math.cos(a) * radius);
@@ -399,17 +425,17 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     };
   }, [beads]);
   const addBead = (item: CatalogItem) => {
-    if (beads.length >= 28) return;
-    setBeads([...beads, { ...item, id: `${Date.now()}-${Math.random()}` }]);
+    if (beads.length >= maxBeads) return;
+    updateBeads([...beads, { ...item, id: `${Date.now()}-${Math.random()}` }]);
   };
 
   const addLetters = () => {
     const clean = word.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 12);
     if (!clean) return;
-    const styleObj = LETTER_STYLES.find((s) => s.id === letterStyle) || LETTER_STYLES[0];
+    const styleObj = LETTER_STYLES.find((s) => s.id === letterStyle) ?? LETTER_STYLES.at(0)!;
     const newLetters: BeadItem[] = clean.split("").map((ch, idx) => {
       const bg = styleObj.bg === "jelly" ? jellyTint : styleObj.bg;
-      const fg = styleObj.fg === "colorful" ? COLORFUL_INKS[idx % COLORFUL_INKS.length] : styleObj.fg;
+      const fg = styleObj.fg === "colorful" ? COLORFUL_INKS.at(idx % COLORFUL_INKS.length)! : styleObj.fg;
       return {
         id: `${Date.now()}-${idx}-${Math.random()}`,
         label: ch,
@@ -421,7 +447,7 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
         shape: "coin",
       };
     });
-    setBeads([...beads, ...newLetters].slice(0, 28));
+    updateBeads([...beads, ...newLetters].slice(0, maxBeads));
     setWord("");
   };
 
@@ -430,11 +456,33 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     if (next < 0 || next >= beads.length) return;
     const copy = [...beads];
     [copy[index], copy[next]] = [copy[next], copy[index]];
-    setBeads(copy);
+    updateBeads(copy);
   };
 
-  const removeBead = (index: number) => {
-    setBeads(beads.filter((_, i) => i !== index));
+  const removeBead = (index: number) => updateBeads(beads.filter((_, i) => i !== index));
+
+  const handleUndo = () => {
+    if (history.length === 0) return;
+    setBeads(history[history.length - 1]);
+    setHistory((prev) => prev.slice(0, -1));
+  };
+
+  const handleMirror = () => {
+    if (beads.length === 0 || beads.length >= maxBeads) return;
+    const mirrored = [...beads].reverse().map((b, i) => ({ ...b, id: `${Date.now()}-m-${i}-${Math.random()}` }));
+    updateBeads([...beads, ...mirrored].slice(0, maxBeads));
+  };
+
+  const loadPreset = (items: CatalogItem[]) => {
+    updateBeads(items.slice(0, maxBeads).map((item, i) => ({ ...item, id: `${Date.now()}-p-${i}-${Math.random()}` })));
+  };
+
+  const downloadSnapshot = () => {
+    if (!canvasRef.current) return;
+    const link = document.createElement("a");
+    link.download = `chereve-bracelet-${Date.now()}.png`;
+    link.href = canvasRef.current.toDataURL("image/png");
+    link.click();
   };
 
   const tabs: { id: BeadCategory; en: string; idLabel: string }[] = [
@@ -449,7 +497,7 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
   const baseStyle = LETTER_STYLES.find((s) => s.id === letterStyle)?.en || "White (Black Letter)";
   const tintName = JELLY_TINTS.find((t) => t.hex === jellyTint)?.en || "Pink";
   const styleLabel = letterStyle === "jelly" ? `Clear Jelly (${tintName})` : baseStyle;
-  const orderSummary = `🎀 CHEREVE Custom Bracelet Order 🎀\nBeads (${beads.length}): ${beads.map((b) => b.label).join(" - ")}\nLetter Bead Style: ${styleLabel}\nTotal: Rp 15.000`;
+  const orderSummary = `🎀 CHEREVE Custom Bracelet Order 🎀\nWrist Size: ${currentWrist.label}\nBeads (${beads.length}/${maxBeads}): ${beads.map((b) => b.label).join(" - ")}\nLetter Bead Style: ${styleLabel}\nTotal: Rp 15.000`;
 
   const copyOrder = () => {
     navigator.clipboard.writeText(orderSummary);
@@ -472,17 +520,30 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         <div className="bg-white/85 backdrop-blur-sm border border-pink-100 rounded-3xl p-5 shadow-sm">
-          <div ref={mountRef} className="w-full h-72 sm:h-80 rounded-2xl bg-gradient-to-b from-pink-50/70 via-purple-50/50 to-sky-50/70 cursor-grab active:cursor-grabbing" />
-                   <p className="mt-2.5 text-[11px] font-semibold text-center text-stone-600 bg-pink-50/70 border border-pink-100 rounded-xl px-3 py-1.5">
+          <div className="relative">
+            <div ref={mountRef} className="w-full h-72 sm:h-80 rounded-2xl bg-gradient-to-b from-pink-50/70 via-purple-50/50 to-sky-50/70 cursor-grab active:cursor-grabbing" />
+            <button type="button" onClick={downloadSnapshot} className="absolute top-3 right-3 bg-white/90 hover:bg-white text-stone-700 border border-pink-100 text-[11px] font-semibold px-3 py-1.5 rounded-full shadow-2xs transition">
+              {lang === "en" ? "📸 Save Photo" : "📸 Simpan Foto"}
+            </button>
+          </div>
+          <p className="mt-2.5 text-[11px] font-semibold text-center text-stone-600 bg-pink-50/70 border border-pink-100 rounded-xl px-3 py-1.5">
             {lang === "en"
               ? "Note: The 3D preview is for layout & color visualization only, actual beads look even prettier in real life !"
               : "Catatan: Preview 3D hanya untuk visualisasi susunan & warna ya, manik aslinya jauh lebih cantik di dunia nyata !"}
           </p>
-          <div className="flex items-center justify-between mt-4 text-xs text-stone-500">
-            <span>{beads.length} / 28 {lang === "en" ? "beads" : "manik"}</span>
-            <button type="button" onClick={() => setBeads([])} className="text-rose-500 hover:underline font-medium">
-              {lang === "en" ? "Clear All" : "Hapus Semua"}
-            </button>
+          <div className="flex flex-wrap items-center justify-between gap-2 mt-4 text-xs text-stone-500">
+            <span className="font-medium">{beads.length} / {maxBeads} {lang === "en" ? "beads" : "manik"}</span>
+            <div className="flex items-center gap-2">
+              <button type="button" onClick={handleUndo} disabled={history.length === 0} className="px-2.5 py-1 rounded-full bg-stone-100 hover:bg-stone-200 disabled:opacity-40 text-stone-700 font-medium transition">
+                {lang === "en" ? "↶ Undo" : "↶ Batal"}
+              </button>
+              <button type="button" onClick={handleMirror} disabled={beads.length === 0 || beads.length >= maxBeads} className="px-2.5 py-1 rounded-full bg-purple-100 hover:bg-purple-200 disabled:opacity-40 text-stone-800 font-medium transition">
+                {lang === "en" ? "⇄ Mirror" : "⇄ Simetri"}
+              </button>
+              <button type="button" onClick={() => updateBeads([])} className="text-rose-500 hover:underline font-medium pl-1">
+                {lang === "en" ? "Clear All" : "Hapus Semua"}
+              </button>
+            </div>
           </div>
           <div className="mt-4">
             <p className="text-xs font-semibold text-stone-600 mb-2">
@@ -506,8 +567,34 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
             </div>
           </div>
         </div>
-
         <div className="bg-white/85 backdrop-blur-sm border border-pink-100 rounded-3xl p-6 shadow-sm space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pb-3 border-b border-pink-100">
+            <div>
+              <span className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1.5">
+                {lang === "en" ? "Wrist Size" : "Ukuran Pergelangan"}
+              </span>
+              <div className="flex gap-1.5">
+                {WRIST_SIZES.map((ws) => (
+                  <button key={ws.id} type="button" onClick={() => { setWristSize(ws.id); if (beads.length > ws.max) updateBeads(beads.slice(0, ws.max)); }} className={`px-2.5 py-1 rounded-full text-xs font-medium border transition ${wristSize === ws.id ? "bg-stone-800 text-white border-stone-800" : "bg-white text-stone-600 border-pink-100 hover:bg-pink-50"}`}>
+                    {ws.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <span className="block text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1.5">
+                {lang === "en" ? "Inspo Presets" : "Template Inspo"}
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {PRESETS.map((pr) => (
+                  <button key={pr.nameEn} type="button" onClick={() => loadPreset(pr.items)} className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-pink-50 hover:bg-pink-100 text-pink-800 border border-pink-200 transition">
+                    ✨ {lang === "en" ? pr.nameEn : pr.nameId}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
               {lang === "en" ? "1. Pick Beads & Charms" : "1. Pilih Manik & Charm"}
@@ -520,7 +607,7 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
               ))}
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-56 overflow-y-auto pt-1 pr-1">
-              {CATALOG.filter((item) => item.category === tab).map((item) => (
+              {ALL_CATALOG.filter((item) => item.category === tab).map((item) => (
                 <button key={item.label} type="button" onClick={() => addBead(item)} className="flex items-center gap-2 bg-white hover:bg-pink-50/80 border border-pink-100 rounded-2xl p-2.5 text-left transition shadow-2xs">
                   <span className="w-5 h-5 rounded-full shrink-0 border border-stone-200 shadow-inner" style={{ background: item.color2 ? `linear-gradient(135deg, ${item.color}, ${item.color2})` : item.color }} />
                   <span className="text-xs font-medium text-stone-800 leading-tight">{item.label}</span>
@@ -535,34 +622,16 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
             </label>
             <div className="flex flex-wrap gap-1.5 mb-2.5">
               {LETTER_STYLES.map((st) => (
-                <button
-                  key={st.id}
-                  type="button"
-                  onClick={() => setLetterStyle(st.id)}
-                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition ${
-                    letterStyle === st.id
-                      ? "bg-purple-300 text-stone-900 border-purple-400 font-semibold"
-                      : "bg-white text-stone-600 border-pink-100 hover:bg-pink-50"
-                  }`}
-                >
+                <button key={st.id} type="button" onClick={() => setLetterStyle(st.id)} className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition ${letterStyle === st.id ? "bg-purple-300 text-stone-900 border-purple-400 font-semibold" : "bg-white text-stone-600 border-pink-100 hover:bg-pink-50"}`}>
                   {lang === "en" ? st.en : st.idLabel}
                 </button>
               ))}
             </div>
             {letterStyle === "jelly" && (
               <div className="flex flex-wrap items-center gap-1.5 mb-2.5 bg-pink-50/60 border border-pink-100 rounded-2xl px-3 py-2">
-                <span className="text-[11px] font-medium text-stone-500 mr-1">
-                  {lang === "en" ? "Jelly color:" : "Warna jelly:"}
-                </span>
+                <span className="text-[11px] font-medium text-stone-500 mr-1">{lang === "en" ? "Jelly color:" : "Warna jelly:"}</span>
                 {JELLY_TINTS.map((t) => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => setJellyTint(t.hex)}
-                    className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] border transition ${
-                      jellyTint === t.hex ? "bg-white border-stone-800 font-semibold shadow-2xs" : "bg-white/70 border-pink-100 text-stone-600"
-                    }`}
-                  >
+                  <button key={t.id} type="button" onClick={() => setJellyTint(t.hex)} className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] border transition ${jellyTint === t.hex ? "bg-white border-stone-800 font-semibold shadow-2xs" : "bg-white/70 border-pink-100 text-stone-600"}`}>
                     <span className="w-2.5 h-2.5 rounded-full border border-stone-200" style={{ backgroundColor: t.hex }} />
                     <span>{lang === "en" ? t.en : t.idLabel}</span>
                   </button>
