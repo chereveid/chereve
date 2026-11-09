@@ -72,12 +72,18 @@ const LETTER_STYLES = [
   { id: "white-black", en: "White (Black Letter)", idLabel: "Putih (Huruf Hitam)", bg: "#FFFFFF", fg: "#18181B" },
   { id: "white-color", en: "White (Colorful)", idLabel: "Putih (Huruf Warna)", bg: "#FFFFFF", fg: "colorful" },
   { id: "black-white", en: "Black (White Letter)", idLabel: "Hitam (Huruf Putih)", bg: "#18181B", fg: "#FFFFFF" },
-  { id: "pastel", en: "Pastel Mix", idLabel: "Pastel Warna-Warni", bg: "pastel", fg: "#18181B" },
   { id: "jelly", en: "Clear Jelly", idLabel: "Bening Jelly", bg: "jelly", fg: "#FFFFFF" },
 ];
 
-const PASTEL_COIN_COLORS = ["#F9C6D4", "#DCC6F8", "#C8F2D6", "#C3E5FA", "#FEF08A"];
-const JELLY_COIN_COLORS = ["#F472B6", "#A855F7", "#38BDF8", "#4ADE80", "#FB923C"];
+const JELLY_TINTS = [
+  { id: "pink", en: "Pink", idLabel: "Pink", hex: "#F472B6" },
+  { id: "purple", en: "Purple", idLabel: "Ungu", hex: "#A855F7" },
+  { id: "blue", en: "Blue", idLabel: "Biru", hex: "#38BDF8" },
+  { id: "green", en: "Green", idLabel: "Hijau", hex: "#4ADE80" },
+  { id: "orange", en: "Orange", idLabel: "Oranye", hex: "#FB923C" },
+  { id: "clear", en: "Clear", idLabel: "Bening", hex: "#E2E8F0" },
+];
+
 const COLORFUL_INKS = ["#EC4899", "#8B5CF6", "#0EA5E9", "#10B981", "#F59E0B"];
 
 const INITIAL_BEADS: BeadItem[] = [
@@ -258,6 +264,7 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
   const [beads, setBeads] = useState<BeadItem[]>(INITIAL_BEADS);
   const [tab, setTab] = useState<BeadCategory>("pearls");
   const [letterStyle, setLetterStyle] = useState("white-black");
+  const [jellyTint, setJellyTint] = useState("#F472B6");
   const [word, setWord] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -401,16 +408,8 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     if (!clean) return;
     const styleObj = LETTER_STYLES.find((s) => s.id === letterStyle) || LETTER_STYLES[0];
     const newLetters: BeadItem[] = clean.split("").map((ch, idx) => {
-      const bg =
-        styleObj.bg === "pastel"
-          ? PASTEL_COIN_COLORS[idx % PASTEL_COIN_COLORS.length]
-          : styleObj.bg === "jelly"
-          ? JELLY_COIN_COLORS[idx % JELLY_COIN_COLORS.length]
-          : styleObj.bg;
-      const fg =
-        styleObj.fg === "colorful"
-          ? COLORFUL_INKS[idx % COLORFUL_INKS.length]
-          : styleObj.fg;
+      const bg = styleObj.bg === "jelly" ? jellyTint : styleObj.bg;
+      const fg = styleObj.fg === "colorful" ? COLORFUL_INKS[idx % COLORFUL_INKS.length] : styleObj.fg;
       return {
         id: `${Date.now()}-${idx}-${Math.random()}`,
         label: ch,
@@ -447,7 +446,9 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     { id: "shapes", en: "Shapes & Charms", idLabel: "Bentuk & Charm" },
   ];
 
-  const styleLabel = LETTER_STYLES.find((s) => s.id === letterStyle)?.en || "White (Black Letter)";
+  const baseStyle = LETTER_STYLES.find((s) => s.id === letterStyle)?.en || "White (Black Letter)";
+  const tintName = JELLY_TINTS.find((t) => t.hex === jellyTint)?.en || "Pink";
+  const styleLabel = letterStyle === "jelly" ? `Clear Jelly (${tintName})` : baseStyle;
   const orderSummary = `🎀 CHEREVE Custom Bracelet Order 🎀\nBeads (${beads.length}): ${beads.map((b) => b.label).join(" - ")}\nLetter Bead Style: ${styleLabel}\nTotal: Rp 15.000`;
 
   const copyOrder = () => {
@@ -548,6 +549,26 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
                 </button>
               ))}
             </div>
+            {letterStyle === "jelly" && (
+              <div className="flex flex-wrap items-center gap-1.5 mb-2.5 bg-pink-50/60 border border-pink-100 rounded-2xl px-3 py-2">
+                <span className="text-[11px] font-medium text-stone-500 mr-1">
+                  {lang === "en" ? "Jelly color:" : "Warna jelly:"}
+                </span>
+                {JELLY_TINTS.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setJellyTint(t.hex)}
+                    className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] border transition ${
+                      jellyTint === t.hex ? "bg-white border-stone-800 font-semibold shadow-2xs" : "bg-white/70 border-pink-100 text-stone-600"
+                    }`}
+                  >
+                    <span className="w-2.5 h-2.5 rounded-full border border-stone-200" style={{ backgroundColor: t.hex }} />
+                    <span>{lang === "en" ? t.en : t.idLabel}</span>
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="flex gap-2">
               <input type="text" value={word} onChange={(e) => setWord(e.target.value)} placeholder={lang === "en" ? "Type name (e.g. CHEREVE)" : "Ketik nama (cth: CHEREVE)"} maxLength={12} className="flex-1 bg-white border border-pink-200 rounded-full px-4 py-2 text-sm text-stone-800 focus:outline-none focus:border-pink-400" />
               <button type="button" onClick={addLetters} className="bg-purple-200 hover:bg-purple-300 text-stone-900 font-semibold text-xs px-5 py-2 rounded-full transition">
