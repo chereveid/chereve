@@ -9,9 +9,10 @@ export type CatalogItem = {
   label: string;
   color: string;
   color2?: string;
+  letterStyle?: string;
   category: BeadCategory;
   mm: 4 | 6 | 8 | 10;
-  shape?: "round" | "heart" | "flower" | "daisy" | "butterfly" | "star" | "cube";
+  shape?: "round" | "heart" | "flower" | "daisy" | "butterfly" | "star" | "coin";
 };
 
 export type BeadItem = CatalogItem & { id: string };
@@ -67,6 +68,18 @@ const CATALOG: CatalogItem[] = [
   { label: "Clear Iridescent Star", color: "#E2E8F0", category: "shapes", mm: 8, shape: "star" },
 ];
 
+const LETTER_STYLES = [
+  { id: "white-black", en: "White (Black Letter)", idLabel: "Putih (Huruf Hitam)", bg: "#FFFFFF", fg: "#18181B" },
+  { id: "white-color", en: "White (Colorful)", idLabel: "Putih (Huruf Warna)", bg: "#FFFFFF", fg: "colorful" },
+  { id: "black-white", en: "Black (White Letter)", idLabel: "Hitam (Huruf Putih)", bg: "#18181B", fg: "#FFFFFF" },
+  { id: "pastel", en: "Pastel Mix", idLabel: "Pastel Warna-Warni", bg: "pastel", fg: "#18181B" },
+  { id: "jelly", en: "Clear Jelly", idLabel: "Bening Jelly", bg: "jelly", fg: "#FFFFFF" },
+];
+
+const PASTEL_COIN_COLORS = ["#F9C6D4", "#DCC6F8", "#C8F2D6", "#C3E5FA", "#FEF08A"];
+const JELLY_COIN_COLORS = ["#F472B6", "#A855F7", "#38BDF8", "#4ADE80", "#FB923C"];
+const COLORFUL_INKS = ["#EC4899", "#8B5CF6", "#0EA5E9", "#10B981", "#F59E0B"];
+
 const INITIAL_BEADS: BeadItem[] = [
   { id: "1", label: "Light Pink Pearl (6mm)", color: "#FBCFE8", category: "pearls", mm: 6, shape: "round" },
   { id: "2", label: "White Pearl (6mm)", color: "#FFFDF9", category: "pearls", mm: 6, shape: "round" },
@@ -74,28 +87,24 @@ const INITIAL_BEADS: BeadItem[] = [
   { id: "4", label: "Pink Iridescent Butterfly", color: "#F9A8D4", category: "shapes", mm: 10, shape: "butterfly" },
   { id: "5", label: "White Pearl (6mm)", color: "#FFFDF9", category: "pearls", mm: 6, shape: "round" },
   { id: "6", label: "Lilac Pearl (6mm)", color: "#D8B4FE", category: "pearls", mm: 6, shape: "round" },
-  { id: "7", label: "White Pearl (4mm)", color: "#FFFDF9", category: "pearls", mm: 4, shape: "round" },
-  { id: "8", label: "Pink Jambu Pearl (6mm)", color: "#FB7185", category: "pearls", mm: 6, shape: "round" },
+  { id: "7", label: "Pink Jambu Pearl (6mm)", color: "#FB7185", category: "pearls", mm: 6, shape: "round" },
 ];
 function getBeadWidth(b: BeadItem): number {
-  if (b.category === "letter") return 0.28;
+  if (b.category === "letter") return 0.3;
   if (b.shape === "butterfly") return 0.34;
   if (b.shape === "heart" || b.shape === "star" || b.shape === "flower" || b.shape === "daisy") return 0.3;
   return b.mm === 4 ? 0.22 : b.mm === 6 ? 0.31 : b.mm === 8 ? 0.39 : 0.47;
 }
 
-function makeLetterTexture(letter: string) {
+function makeLetterTexture(letter: string, bgColor: string, fgColor: string) {
   const canvas = document.createElement("canvas");
   canvas.width = 128;
   canvas.height = 128;
   const ctx = canvas.getContext("2d")!;
-  ctx.fillStyle = "#FFFDF9";
+  ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, 128, 128);
-  ctx.strokeStyle = "#F9C6D4";
-  ctx.lineWidth = 8;
-  ctx.strokeRect(4, 4, 120, 120);
-  ctx.fillStyle = "#292524";
-  ctx.font = "bold 72px serif";
+  ctx.fillStyle = fgColor;
+  ctx.font = "bold 76px sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(letter, 64, 68);
@@ -146,10 +155,28 @@ function buildBeadMesh(b: BeadItem): THREE.Object3D {
   const scale = b.mm === 4 ? 0.11 : b.mm === 6 ? 0.155 : b.mm === 8 ? 0.195 : 0.235;
 
   if (b.category === "letter") {
-    return new THREE.Mesh(
-      new THREE.BoxGeometry(0.26, 0.26, 0.26),
-      new THREE.MeshStandardMaterial({ map: makeLetterTexture(b.label), roughness: 0.25 })
+    const tex = makeLetterTexture(b.label, b.color, b.color2 || "#18181B");
+    const isJelly = b.letterStyle === "jelly";
+    const sideMat = new THREE.MeshPhysicalMaterial({
+      color: b.color,
+      roughness: 0.15,
+      clearcoat: 1,
+      transparent: isJelly,
+      opacity: isJelly ? 0.72 : 1,
+    });
+    const faceMat = new THREE.MeshPhysicalMaterial({
+      map: tex,
+      roughness: 0.15,
+      clearcoat: 1,
+      transparent: isJelly,
+      opacity: isJelly ? 0.85 : 1,
+    });
+    const coin = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.165, 0.165, 0.1, 28),
+      [sideMat, faceMat, faceMat]
     );
+    coin.rotation.x = Math.PI / 2;
+    return coin;
   }
 
   const tex = makeSpecialTexture(b);
@@ -226,11 +253,11 @@ function buildBeadMesh(b: BeadItem): THREE.Object3D {
 
   return new THREE.Mesh(new THREE.SphereGeometry(scale, 32, 32), mat);
 }
-
 export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [beads, setBeads] = useState<BeadItem[]>(INITIAL_BEADS);
   const [tab, setTab] = useState<BeadCategory>("pearls");
+  const [letterStyle, setLetterStyle] = useState("white-black");
   const [word, setWord] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -260,7 +287,6 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     const group = new THREE.Group();
     scene.add(group);
 
-    // Calculate exact bracelet radius so beads touch snugly with zero gap
     const widths = beads.map(getBeadWidth);
     const totalBeadArc = widths.reduce((sum, w) => sum + w, 0);
     const chainGap = 0.85;
@@ -277,7 +303,6 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     const startAngle = -beadAngleSpan / 2;
     const endAngle = beadAngleSpan / 2;
 
-    // Place beads side-by-side touching seamlessly
     let cursor = startAngle;
     beads.forEach((b, i) => {
       const w = widths[i];
@@ -289,14 +314,12 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
       group.add(obj);
     });
 
-    // Silver bead caps snug against first & last bead
     [startAngle - 0.05 / radius, endAngle + 0.05 / radius].forEach((a) => {
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.085, 16, 16), silverMat);
       cap.position.set(Math.sin(a) * radius, 0, Math.cos(a) * radius);
       group.add(cap);
     });
 
-    // Silver extender chain along the back gap
     const backSpan = Math.PI * 2 - beadAngleSpan - 0.16 / radius;
     const linkCount = Math.max(4, Math.round((backSpan * radius) / 0.11));
     for (let i = 0; i <= linkCount; i++) {
@@ -308,7 +331,6 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
       group.add(link);
     }
 
-    // Clasp jump ring + dangling silver tail
     const claspAngle = startAngle - 0.12 / radius;
     const jumpRing = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.018, 10, 24), silverMat);
     jumpRing.position.set(Math.sin(claspAngle) * radius, 0, Math.cos(claspAngle) * radius);
@@ -325,6 +347,7 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
       tailLink.rotation.y = claspAngle + (d % 2 === 0 ? 0.5 : -0.5);
       group.add(tailLink);
     }
+
     let dragging = false;
     let prevX = 0;
     let prevY = 0;
@@ -368,7 +391,6 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
       renderer.dispose();
     };
   }, [beads]);
-
   const addBead = (item: CatalogItem) => {
     if (beads.length >= 28) return;
     setBeads([...beads, { ...item, id: `${Date.now()}-${Math.random()}` }]);
@@ -377,14 +399,29 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
   const addLetters = () => {
     const clean = word.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 12);
     if (!clean) return;
-    const newLetters: BeadItem[] = clean.split("").map((ch, idx) => ({
-      id: `${Date.now()}-${idx}-${Math.random()}`,
-      label: ch,
-      color: "#FFFDF9",
-      category: "letter",
-      mm: 6,
-      shape: "cube",
-    }));
+    const styleObj = LETTER_STYLES.find((s) => s.id === letterStyle) || LETTER_STYLES[0];
+    const newLetters: BeadItem[] = clean.split("").map((ch, idx) => {
+      const bg =
+        styleObj.bg === "pastel"
+          ? PASTEL_COIN_COLORS[idx % PASTEL_COIN_COLORS.length]
+          : styleObj.bg === "jelly"
+          ? JELLY_COIN_COLORS[idx % JELLY_COIN_COLORS.length]
+          : styleObj.bg;
+      const fg =
+        styleObj.fg === "colorful"
+          ? COLORFUL_INKS[idx % COLORFUL_INKS.length]
+          : styleObj.fg;
+      return {
+        id: `${Date.now()}-${idx}-${Math.random()}`,
+        label: ch,
+        color: bg,
+        color2: fg,
+        letterStyle: styleObj.id,
+        category: "letter",
+        mm: 6,
+        shape: "coin",
+      };
+    });
     setBeads([...beads, ...newLetters].slice(0, 28));
     setWord("");
   };
@@ -410,7 +447,8 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
     { id: "shapes", en: "Shapes & Charms", idLabel: "Bentuk & Charm" },
   ];
 
-  const orderSummary = `🎀 CHEREVE Custom Bracelet Order 🎀\nBeads (${beads.length}): ${beads.map((b) => b.label).join(" - ")}\nTotal: Rp 15.000`;
+  const styleLabel = LETTER_STYLES.find((s) => s.id === letterStyle)?.en || "White (Black Letter)";
+  const orderSummary = `🎀 CHEREVE Custom Bracelet Order 🎀\nBeads (${beads.length}): ${beads.map((b) => b.label).join(" - ")}\nLetter Bead Style: ${styleLabel}\nTotal: Rp 15.000`;
 
   const copyOrder = () => {
     navigator.clipboard.writeText(orderSummary);
@@ -434,11 +472,11 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         <div className="bg-white/85 backdrop-blur-sm border border-pink-100 rounded-3xl p-5 shadow-sm">
           <div ref={mountRef} className="w-full h-72 sm:h-80 rounded-2xl bg-gradient-to-b from-pink-50/70 via-purple-50/50 to-sky-50/70 cursor-grab active:cursor-grabbing" />
-                  <p className="mt-2.5 text-[11px] text-center text-stone-500 bg-pink-50/70 border border-pink-100 rounded-xl px-3 py-1.5">
-          {lang === "en"
-            ? "<3 Note: The 3D preview is for layout & color visualization only, actual beads look even prettier in real life!"
-            : "<3 Catatan: Preview 3D hanya ilustrasi susunan & warna ya, manik aslinya jauh lebih cantik dan berkilau!"}
-        </p>
+          <p className="mt-2.5 text-[11px] text-center text-stone-500 bg-pink-50/70 border border-pink-100 rounded-xl px-3 py-1.5">
+            {lang === "en"
+              ? "✨ Note: The 3D preview is for layout & color visualization only—actual beads look even prettier in real life!"
+              : "✨ Catatan: Preview 3D hanya ilustrasi susunan & warna ya—manik aslinya jauh lebih cantik dan berkilau!"}
+          </p>
           <div className="flex items-center justify-between mt-4 text-xs text-stone-500">
             <span>{beads.length} / 28 {lang === "en" ? "beads" : "manik"}</span>
             <button type="button" onClick={() => setBeads([])} className="text-rose-500 hover:underline font-medium">
@@ -494,6 +532,22 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
             <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
               {lang === "en" ? "2. Add Name / Letters" : "2. Tambah Nama / Huruf"}
             </label>
+            <div className="flex flex-wrap gap-1.5 mb-2.5">
+              {LETTER_STYLES.map((st) => (
+                <button
+                  key={st.id}
+                  type="button"
+                  onClick={() => setLetterStyle(st.id)}
+                  className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition ${
+                    letterStyle === st.id
+                      ? "bg-purple-300 text-stone-900 border-purple-400 font-semibold"
+                      : "bg-white text-stone-600 border-pink-100 hover:bg-pink-50"
+                  }`}
+                >
+                  {lang === "en" ? st.en : st.idLabel}
+                </button>
+              ))}
+            </div>
             <div className="flex gap-2">
               <input type="text" value={word} onChange={(e) => setWord(e.target.value)} placeholder={lang === "en" ? "Type name (e.g. CHEREVE)" : "Ketik nama (cth: CHEREVE)"} maxLength={12} className="flex-1 bg-white border border-pink-200 rounded-full px-4 py-2 text-sm text-stone-800 focus:outline-none focus:border-pink-400" />
               <button type="button" onClick={addLetters} className="bg-purple-200 hover:bg-purple-300 text-stone-900 font-semibold text-xs px-5 py-2 rounded-full transition">
