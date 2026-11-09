@@ -345,6 +345,7 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
       const obj = buildBeadMesh(b);
       obj.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
       obj.lookAt(0, 0, 0);
+      if (b.category === "shapes") obj.rotateZ(Math.PI / 2);
       group.add(obj);
     });
     [startAngle - 0.05 / radius, endAngle + 0.05 / radius].forEach((a) => {
