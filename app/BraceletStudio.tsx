@@ -436,8 +436,8 @@ export default function BraceletStudio({ lang }: { lang: "en" | "id" }) {
           <div ref={mountRef} className="w-full h-72 sm:h-80 rounded-2xl bg-gradient-to-b from-pink-50/70 via-purple-50/50 to-sky-50/70 cursor-grab active:cursor-grabbing" />
                   <p className="mt-2.5 text-[11px] text-center text-stone-500 bg-pink-50/70 border border-pink-100 rounded-xl px-3 py-1.5">
           {lang === "en"
-            ? "✨ Note: The 3D preview is for layout & color visualization only—actual beads look even prettier in real life!"
-            : "✨ Catatan: Preview 3D hanya ilustrasi susunan & warna ya—manik aslinya jauh lebih cantik dan berkilau!"}
+            ? "<3 Note: The 3D preview is for layout & color visualization only, actual beads look even prettier in real life!"
+            : "<3 Catatan: Preview 3D hanya ilustrasi susunan & warna ya, manik aslinya jauh lebih cantik dan berkilau!"}
         </p>
           <div className="flex items-center justify-between mt-4 text-xs text-stone-500">
             <span>{beads.length} / 28 {lang === "en" ? "beads" : "manik"}</span>
